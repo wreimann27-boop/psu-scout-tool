@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First JavaScript</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        background-color: #1e407c;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 12px;
+        padding: 32px;
+        width: 600px;
+      }
+
+      button {
+        background-color: #1e407c;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      p {
+        color: #555;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Scout Tool</h1>
+      <p id="message">Press the button.</p>
+      <button onclick="analyzePlayer()">Analyze Player</button>
+    </div>
+  </body>
+
+  <script>
+    function analyzePlayer() {
+      document.getElementById("message").innerText = "Kaytron Allen — PFF Grade: 89.7. Tough runner. Ball security issue.";
+    }
+  </script>
+
+</html>
