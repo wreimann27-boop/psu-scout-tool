@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const express = require('express');
 const app = express();
@@ -24,6 +26,11 @@ app.post('/api/scout', async (req, res) => {
   });
 
   const data = await response.json();
+  if (!data.content || !data.content[0]) {
+    console.error('Claude API error:', JSON.stringify(data));
+    res.status(500).json({ error: 'Claude API error', details: data });
+    return;
+  }
   res.json({ result: data.content[0].text });
 });
 
