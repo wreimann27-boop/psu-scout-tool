@@ -1,4 +1,6 @@
-require('dotenv').config();const express = require('express');
+require('dotenv').config();
+
+const express = require('express');
 const app = express();
 
 app.use(express.json());
@@ -11,26 +13,7 @@ app.post('/api/scout', async (req, res) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-'x-api-key': process.env.ANTHROPIC_API_KEY,
-```
-
-`Ctrl + S`.
-
-**Step 2 — Create a .env file for local use**
-
-Create a new file in your `my-first-app` folder called `.env` and paste this in with your real key:
-```
-ANTHROPIC_API_KEY=your-real-key-here
-```
-
-No quotes around the key. `Ctrl + S`.
-
-**Step 3 — Add .env to .gitignore**
-
-Open `.gitignore` and add a second line:
-```
-node_modules
-.env,
+      'x-api-key': process.env.ANTHROPIC_API_KEY,
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
@@ -47,3 +30,10 @@ node_modules
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
 });
+```
+
+Replace everything in `server.js` with this. `Ctrl + S`. Then in your Command Prompt run:
+```
+git add .
+git commit -m "fix server.js formatting"
+git push
