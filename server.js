@@ -30,10 +30,3 @@ app.post('/api/scout', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
 });
-```
-
-Replace everything in `server.js` with this. `Ctrl + S`. Then in your Command Prompt run:
-```
-git add .
-git commit -m "fix server.js formatting"
-git push
