@@ -1,4 +1,4 @@
-const express = require('express');
+require('dotenv').config();const express = require('express');
 const app = express();
 
 app.use(express.json());
@@ -11,7 +11,26 @@ app.post('/api/scout', async (req, res) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': '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',
+'x-api-key': process.env.ANTHROPIC_API_KEY,
+```
+
+`Ctrl + S`.
+
+**Step 2 — Create a .env file for local use**
+
+Create a new file in your `my-first-app` folder called `.env` and paste this in with your real key:
+```
+ANTHROPIC_API_KEY=your-real-key-here
+```
+
+No quotes around the key. `Ctrl + S`.
+
+**Step 3 — Add .env to .gitignore**
+
+Open `.gitignore` and add a second line:
+```
+node_modules
+.env,
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
