@@ -11,27 +11,34 @@ app.use(express.static('.'));
 app.post('/api/scout', async (req, res) => {
   const { prompt } = req.body;
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
 
-  const data = await response.json();
-  if (!data.content || !data.content[0]) {
-    console.error('Claude API error:', JSON.stringify(data));
-    res.status(500).json({ error: 'Claude API error', details: data });
-    return;
+    const data = await response.json();
+
+    if (!data.content || !data.content[0]) {
+      console.error('Claude API error:', JSON.stringify(data));
+      return res.status(500).json({ error: 'Claude API error', details: data });
+    }
+
+    res.json({ result: data.content[0].text });
+
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
-  res.json({ result: data.content[0].text });
 });
 
 app.listen(3000, () => {
