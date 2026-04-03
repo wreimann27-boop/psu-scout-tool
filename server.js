@@ -10,11 +10,10 @@ app.use(express.json());
 app.use(express.static('.'));
 
 const supabase = createClient(
-  'https://xgqugeopquhrtgtncwmw.supabase.co',
-  'sb_publishable_3Ak5z4Wz7j3GedvFOu2gAw_z0qeYODf'
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
 );
 
-// Scout a player via Claude
 app.post('/api/scout', async (req, res) => {
   const { prompt } = req.body;
 
@@ -48,7 +47,6 @@ app.post('/api/scout', async (req, res) => {
   }
 });
 
-// Get all players from Supabase
 app.get('/api/players', async (req, res) => {
   try {
     const { data, error } = await supabase

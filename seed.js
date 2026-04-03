@@ -2,8 +2,8 @@ require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
-  "https://xgqugeopquhrtgtncwmw.supabase.co",
-  "sb_secret__hdzvZa6IR3v2dKqn2JTew_wKPU-hsC"
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
 );
 
 const players = [
