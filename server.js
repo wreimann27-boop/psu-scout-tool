@@ -11,7 +11,7 @@ app.use(express.static('.'));
 
 const supabase = createClient(
   'https://xgqugeopquhrtgtncwmw.supabase.co',
-  process.env.SUPABASE_KEY
+  'sb_publishable_3Ak5z4Wz7j3GedvFOu2gAw_z0qeYODf'
 );
 
 // Scout a player via Claude
