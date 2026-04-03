@@ -56,33 +56,33 @@
         color: #333;
         display: none;
       }
-     #result {
-  color: #555;
-  font-size: 15px;
-  margin-top: 16px;
-  line-height: 1.8;
-}
+      #result {
+        color: #555;
+        font-size: 15px;
+        margin-top: 16px;
+        line-height: 1.8;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Penn State Scout Tool</h1>
       <select id="positionFilter" onchange="filterByPosition()" style="width:100%; padding:12px; font-size:16px; border:1px solid #ccc; border-radius:8px; margin-bottom:12px; box-sizing:border-box;">
-  <option value="">All Positions</option>
-  <option value="QB">QB</option>
-  <option value="RB">RB</option>
-  <option value="WR">WR</option>
-  <option value="TE">TE</option>
-  <option value="OL">OL</option>
-  <option value="DE">DE</option>
-  <option value="DT">DT</option>
-  <option value="LB">LB</option>
-  <option value="CB">CB</option>
-  <option value="S">S</option>
-  <option value="K">K</option>
-  <option value="P">P</option>
-  <option value="LS">LS</option>
-</select>
+        <option value="">All Positions</option>
+        <option value="QB">QB</option>
+        <option value="RB">RB</option>
+        <option value="WR">WR</option>
+        <option value="TE">TE</option>
+        <option value="OL">OL</option>
+        <option value="DE">DE</option>
+        <option value="DT">DT</option>
+        <option value="LB">LB</option>
+        <option value="CB">CB</option>
+        <option value="S">S</option>
+        <option value="K">K</option>
+        <option value="P">P</option>
+        <option value="LS">LS</option>
+      </select>
       <input id="playerInput" type="text" placeholder="Enter player name..."
         oninput="suggestPlayer()"
         onkeydown="if(event.key==='Enter') scoutPlayer()" />
@@ -95,128 +95,18 @@
   </body>
 
   <script>
-    const roster = [
-      {name:"Randy Adirika", number:"52", position:"DT", year:"Freshman", height:"6-3", weight:"308 lbs", hometown:"Miami, Fla."},
-      {name:"Owen Aliciene", number:"77", position:"OL", year:"Freshman", height:"6-7", weight:"298 lbs", hometown:"Cheshire, Conn."},
-      {name:"Drew Allar", number:"15", position:"QB", year:"Senior", height:"6-5", weight:"235 lbs", hometown:"Medina, Ohio"},
-      {name:"Kaytron Allen", number:"13", position:"RB", year:"Senior", height:"5-11", weight:"219 lbs", hometown:"Norfolk, Va."},
-      {name:"Liam Andrews", number:"90", position:"DT", year:"Redshirt Freshman", height:"6-4", weight:"288 lbs", hometown:"Brookline, Mass."},
-      {name:"Tyler Armstead", number:"35", position:"CB", year:"Redshirt Freshman", height:"6-1", weight:"172 lbs", hometown:"Canonsburg, Pa."},
-      {name:"LaVar Arrington II", number:"11", position:"LB", year:"Freshman", height:"6-3", weight:"220 lbs", hometown:"Annapolis, Md."},
-      {name:"Kaleb Artis", number:"58", position:"DT", year:"Redshirt Junior", height:"6-4", weight:"312 lbs", hometown:"Westbury, N.Y."},
-      {name:"Ryan Barker", number:"94", position:"K", year:"Redshirt Sophomore", height:"6-2", weight:"200 lbs", hometown:"Landenberg, Pa."},
-      {name:"Antoine Belgrave-Shorter", number:"3", position:"S", year:"Redshirt Freshman", height:"6-0", weight:"198 lbs", hometown:"Jacksonville, Fla."},
-      {name:"Ethan Black", number:"82", position:"WR", year:"Redshirt Sophomore", height:"5-9", weight:"180 lbs", hometown:"Davidsville, Pa."},
-      {name:"Ty Blanding", number:"39", position:"DT", year:"Redshirt Sophomore", height:"6-1", weight:"295 lbs", hometown:"Bronx, N.Y."},
-      {name:"Henry Boehme", number:"67", position:"OL", year:"Redshirt Sophomore", height:"6-5", weight:"286 lbs", hometown:"Birmingham, Ala."},
-      {name:"Eagan Boyer", number:"64", position:"OL", year:"Redshirt Freshman", height:"6-8", weight:"302 lbs", hometown:"Cornelius, N.C."},
-      {name:"Caleb Brewer", number:"73", position:"OL", year:"Redshirt Freshman", height:"6-4", weight:"302 lbs", hometown:"Reading, Pa."},
-      {name:"Josiah Brown", number:"19", position:"WR", year:"Redshirt Freshman", height:"5-11", weight:"180 lbs", hometown:"Malverne, N.Y."},
-      {name:"Dayshaun Burnett", number:"43", position:"DE", year:"Freshman", height:"6-3", weight:"234 lbs", hometown:"Pittsburgh, Pa."},
-      {name:"Amare Campbell", number:"24", position:"LB", year:"Junior", height:"6-0", weight:"230 lbs", hometown:"Manassas, Va."},
-      {name:"Mason Carlan", number:"76", position:"OL", year:"Redshirt Senior+", height:"6-2", weight:"290 lbs", hometown:"North Little Rock, Ark."},
-      {name:"Liam Clifford", number:"2", position:"WR", year:"Redshirt Senior", height:"6-1", weight:"205 lbs", hometown:"Maineville, Ohio"},
-      {name:"Jabree Coleman", number:"21", position:"RB", year:"Freshman", height:"6-0", weight:"212 lbs", hometown:"Darby Township, Pa."},
-      {name:"Audavion Collins", number:"2", position:"CB", year:"Redshirt Junior", height:"5-11", weight:"180 lbs", hometown:"Covington, Ga."},
-      {name:"De'Andre Cook", number:"94", position:"DT", year:"Redshirt Freshman", height:"6-4", weight:"300 lbs", hometown:"Washington, D.C."},
-      {name:"Cooper Cousins", number:"50", position:"OL", year:"Sophomore", height:"6-6", weight:"316 lbs", hometown:"Erie, Pa."},
-      {name:"Logan Cunningham", number:"31", position:"WR", year:"Redshirt Junior", height:"5-8", weight:"189 lbs", hometown:"Belle Vernon, Pa."},
-      {name:"Amiel Davis", number:"30", position:"RB", year:"Redshirt Senior", height:"6-0", weight:"215 lbs", hometown:"Voorhees, N.J."},
-      {name:"Nick Dawkins", number:"53", position:"OL", year:"Redshirt Senior+", height:"6-4", weight:"305 lbs", hometown:"Allentown, Pa."},
-      {name:"Dominic DeLuca", number:"0", position:"LB", year:"Redshirt Senior", height:"6-1", weight:"226 lbs", hometown:"West Pittston, Pa."},
-      {name:"Tyseer Denmark", number:"4", position:"WR", year:"Redshirt Freshman", height:"5-10", weight:"190 lbs", hometown:"Philadelphia, Pa."},
-      {name:"Dani Dennis-Sutton", number:"33", position:"DE", year:"Senior", height:"6-5", weight:"265 lbs", hometown:"Millsboro, Del."},
-      {name:"Matt Detisch", number:"75", position:"OL", year:"Redshirt Junior", height:"6-6", weight:"292 lbs", hometown:"Mars, Pa."},
-      {name:"Khalil Dinkins", number:"16", position:"TE", year:"Redshirt Senior", height:"6-4", weight:"252 lbs", hometown:"Wexford, Pa."},
-      {name:"Kolin Dinkins", number:"31", position:"S", year:"Redshirt Junior", height:"6-2", weight:"201 lbs", hometown:"Wexford, Pa."},
-      {name:"Daryus Dixson", number:"5", position:"CB", year:"Freshman", height:"6-0", weight:"195 lbs", hometown:"Perris, Calif."},
-      {name:"Anthony Donkoh", number:"68", position:"OL", year:"Redshirt Sophomore", height:"6-5", weight:"320 lbs", hometown:"Aldie, Va."},
-      {name:"Andrew Dufault", number:"92", position:"LS", year:"Redshirt Freshman", height:"6-1", weight:"240 lbs", hometown:"Westwood, Mass."},
-      {name:"Zane Durant", number:"28", position:"DT", year:"Senior", height:"6-1", weight:"287 lbs", hometown:"Lake Nona, Fla."},
-      {name:"Tyler Duzansky", number:"48", position:"LS", year:"Redshirt Senior", height:"6-4", weight:"225 lbs", hometown:"Wheaton, Ill."},
-      {name:"Jeff Exinor Jr.", number:"80", position:"WR", year:"Freshman", height:"6-1", weight:"216 lbs", hometown:"Baltimore, Md."},
-      {name:"Jim Fitzgerald", number:"65", position:"OL", year:"Redshirt Junior", height:"6-7", weight:"317 lbs", hometown:"Severna Park, Md."},
-      {name:"Alonzo Ford Jr.", number:"50", position:"DT", year:"Redshirt Senior+", height:"6-2", weight:"300 lbs", hometown:"Richmond, Va."},
-      {name:"Finn Furmanek", number:"89", position:"TE", year:"Redshirt Sophomore", height:"6-3", weight:"255 lbs", hometown:"State College, Pa."},
-      {name:"Xavier Gilliam", number:"54", position:"DT", year:"Redshirt Freshman", height:"6-2", weight:"300 lbs", hometown:"Montgomery Village, Md."},
-      {name:"Peter Gonzalez", number:"84", position:"WR", year:"Redshirt Freshman", height:"6-2", weight:"207 lbs", hometown:"Mars, Pa."},
-      {name:"Malachi Goodman", number:"78", position:"OL", year:"Freshman", height:"6-6", weight:"315 lbs", hometown:"Bloomfield, N.J."},
-      {name:"Max Granville", number:"18", position:"DE", year:"Redshirt Freshman", height:"6-3", weight:"248 lbs", hometown:"Sugar Land, Texas"},
-      {name:"Jashaun Green", number:"39", position:"S", year:"Redshirt Junior", height:"6-1", weight:"180 lbs", hometown:"State College, Pa."},
-      {name:"Ethan Grunkemeyer", number:"17", position:"QB", year:"Redshirt Freshman", height:"6-2", weight:"207 lbs", hometown:"Lewis Center, Ohio"},
-      {name:"Donnie Harbour", number:"79", position:"OL", year:"Redshirt Freshman", height:"6-3", weight:"325 lbs", hometown:"Milwaukee, Wis."},
-      {name:"Cortez Harris", number:"46", position:"DE", year:"Freshman", height:"6-3", weight:"245 lbs", hometown:"Largo, Md."},
-      {name:"Jaylen Harvey", number:"44", position:"DE", year:"Redshirt Freshman", height:"6-2", weight:"246 lbs", hometown:"Gaithersburg, Md."},
-      {name:"Ian Harvie", number:"54", position:"OL", year:"Redshirt Junior", height:"6-2", weight:"284 lbs", hometown:"Royersford, Pa."},
-      {name:"Tikey Hayes", number:"23", position:"RB", year:"Freshman", height:"5-11", weight:"205 lbs", hometown:"Aliquippa, Pa."},
-      {name:"Max Heffner", number:"37", position:"DB", year:"Freshman", height:"", weight:"180 lbs", hometown:"Birdsboro, Pa."},
-      {name:"Matt Henderson", number:"44", position:"TE", year:"Freshman", height:"6-5", weight:"246 lbs", hometown:"Powhatan, Va."},
-      {name:"Tyler Holzworth", number:"34", position:"RB", year:"Redshirt Senior", height:"6-0", weight:"222 lbs", hometown:"Milford, N.J."},
-      {name:"Liam Horan", number:"61", position:"OL", year:"Redshirt Freshman", height:"6-3", weight:"290 lbs", hometown:"West Chester, Pa."},
-      {name:"Koby Howard", number:"3", position:"WR", year:"Freshman", height:"5-11", weight:"196 lbs", hometown:"Pensacola, Fla."},
-      {name:"Kyron Hudson", number:"1", position:"WR", year:"Redshirt Senior", height:"6-1", weight:"212 lbs", hometown:"Duarte, Calif."},
-      {name:"Olaivavega Ioane", number:"71", position:"OL", year:"Redshirt Junior", height:"6-4", weight:"323 lbs", hometown:"Graham, Wash."},
-      {name:"Anthony Ivey", number:"12", position:"WR", year:"Redshirt Junior", height:"5-11", weight:"191 lbs", hometown:"Lancaster, Pa."},
-      {name:"Daniel Jennings", number:"29", position:"DE", year:"Freshman", height:"6-1", weight:"257 lbs", hometown:"Princeton, W. Va."},
-      {name:"Joshua Johnson", number:"15", position:"CB", year:"Freshman", height:"6-2", weight:"195 lbs", hometown:"Ironton, Ohio"},
-      {name:"Jahmir Joseph", number:"23", position:"CB", year:"Freshman", height:"6-0", weight:"193 lbs", hometown:"Nyack, N.Y."},
-      {name:"Yvan Kemajou", number:"99", position:"DE", year:"Freshman", height:"6-3", weight:"252 lbs", hometown:"Burtonsville, Md."},
-      {name:"Karson Kiesewetter", number:"28", position:"S", year:"Redshirt Sophomore", height:"5-10", weight:"200 lbs", hometown:"Altoona, Pa."},
-      {name:"Brian Kortovich", number:"83", position:"TE", year:"Freshman", height:"6-4", weight:"250 lbs", hometown:"Willoughby, Ohio"},
-      {name:"Bekkem Kritza", number:"16", position:"QB", year:"Freshman", height:"6-5", weight:"199 lbs", hometown:"Chandler, Ariz."},
-      {name:"Jack Lambert", number:"19", position:"QB", year:"Redshirt Sophomore", height:"6-3", weight:"206 lbs", hometown:"Hampstead, N.C."},
-      {name:"Dejuan Lane", number:"10", position:"S", year:"Sophomore", height:"6-2", weight:"206 lbs", hometown:"Jessup, Md."},
-      {name:"King Mack", number:"16", position:"S", year:"Junior", height:"5-10", weight:"193 lbs", hometown:"Miami, Fla."},
-      {name:"Quinton Martin Jr.", number:"25", position:"RB", year:"Redshirt Freshman", height:"6-1", weight:"205 lbs", hometown:"Belle Vernon, Pa."},
-      {name:"Jordan Mayer", number:"95", position:"DE", year:"Redshirt Sophomore", height:"6-4", weight:"250 lbs", hometown:"Jefferson Hills, Pa."},
-      {name:"Bobby Mears", number:"93", position:"DE", year:"Redshirt Sophomore", height:"6-4", weight:"250 lbs", hometown:"West Chester, Pa."},
-      {name:"Donte Nastasi", number:"81", position:"CB", year:"Redshirt Sophomore", height:"5-10", weight:"165 lbs", hometown:"State College, Pa."},
-      {name:"DaKaari Nelson", number:"8", position:"LB", year:"Redshirt Sophomore", height:"6-3", weight:"233 lbs", hometown:"Livingston, Ala."},
-      {name:"Gabriel Nwosu", number:"99", position:"P", year:"Redshirt Senior", height:"6-6", weight:"296 lbs", hometown:"Derwood, Md."},
-      {name:"Brady O'Hara", number:"59", position:"OL", year:"Freshman", height:"6-6", weight:"293 lbs", hometown:"Mars, Pa."},
-      {name:"Andrew Olesh", number:"88", position:"TE", year:"Freshman", height:"6-5", weight:"236 lbs", hometown:"Center Valley, Pa."},
-      {name:"Chimdy Onoh", number:"55", position:"OL", year:"Redshirt Sophomore", height:"6-5", weight:"321 lbs", hometown:"Baltimore, Md."},
-      {name:"Matt Outten", number:"6", position:"WR", year:"Freshman", height:"6-1", weight:"215 lbs", hometown:"Portsmouth, Va."},
-      {name:"Matthew Parker", number:"98", position:"K", year:"Freshman", height:"6-0", weight:"220 lbs", hometown:"York, Pa."},
-      {name:"Lamont Payne Jr.", number:"27", position:"S", year:"Redshirt Sophomore", height:"6-0", weight:"192 lbs", hometown:"Carnegie, Pa."},
-      {name:"Trebor Pena", number:"8", position:"WR", year:"Redshirt Senior+", height:"5-10", weight:"187 lbs", hometown:"Ocean Township, N.J."},
-      {name:"Aidan Probst", number:"47", position:"DE", year:"Redshirt Freshman", height:"6-2", weight:"250 lbs", hometown:"Erie, Pa."},
-      {name:"Jackson Pryts", number:"38", position:"LB", year:"Redshirt Junior", height:"6-3", weight:"223 lbs", hometown:"Hermitage, Pa."},
-      {name:"Andrew Rappleyea", number:"87", position:"TE", year:"Redshirt Sophomore", height:"6-4", weight:"252 lbs", hometown:"Millbrook, N.Y."},
-      {name:"Luke Reynolds", number:"85", position:"TE", year:"Sophomore", height:"6-4", weight:"253 lbs", hometown:"Westford, Mass."},
-      {name:"Mason Robinson", number:"42", position:"DE", year:"Redshirt Sophomore", height:"6-3", weight:"254 lbs", hometown:"Randallstown, Md."},
-      {name:"Tony Rojas", number:"13", position:"LB", year:"Junior", height:"6-2", weight:"230 lbs", hometown:"Fairfax, Va."},
-      {name:"Devonte Ross", number:"5", position:"WR", year:"Senior", height:"5-10", weight:"170 lbs", hometown:"Cartersville, Ga."},
-      {name:"Nolan Rucci", number:"72", position:"OL", year:"Redshirt Senior", height:"6-8", weight:"305 lbs", hometown:"Lititz, Pa."},
-      {name:"Dominic Rulli", number:"52", position:"OL", year:"Redshirt Junior", height:"6-3", weight:"295 lbs", hometown:"Burlington, Ky."},
-      {name:"Lyrick Samuel", number:"11", position:"WR", year:"Freshman", height:"6-4", weight:"185 lbs", hometown:"Brooklyn, N.Y."},
-      {name:"Kaden Saunders", number:"7", position:"WR", year:"Redshirt Junior", height:"5-10", weight:"184 lbs", hometown:"Columbus, Ohio"},
-      {name:"Garrett Sexton", number:"70", position:"OL", year:"Redshirt Freshman", height:"6-6", weight:"300 lbs", hometown:"Hartland, Wis."},
-      {name:"TJ Shanahan Jr.", number:"54", position:"OL", year:"Redshirt Sophomore", height:"6-4", weight:"315 lbs", hometown:"Orlando, Fla."},
-      {name:"Drew Shelton", number:"66", position:"OL", year:"Senior", height:"6-5", weight:"308 lbs", hometown:"Downingtown, Pa."},
-      {name:"Sam Siafa", number:"88", position:"DT", year:"Redshirt Junior", height:"6-4", weight:"298 lbs", hometown:"Downingtown, Pa."},
-      {name:"Nicholas Singleton", number:"10", position:"RB", year:"Senior", height:"6-0", weight:"224 lbs", hometown:"Shillington, Pa."},
-      {name:"Cam Smith", number:"26", position:"LB", year:"Freshman", height:"6-0", weight:"219 lbs", hometown:"Salem, N.J."},
-      {name:"Corey Smith", number:"24", position:"RB", year:"Redshirt Freshman", height:"5-10", weight:"187 lbs", hometown:"Milwaukee, Wis."},
-      {name:"Jaxon Smolik", number:"14", position:"QB", year:"Redshirt Sophomore", height:"6-1", weight:"205 lbs", hometown:"Van Meter, Iowa"},
-      {name:"Blaise Sokach-Minnick", number:"35", position:"LS", year:"Redshirt Junior", height:"6-3", weight:"224 lbs", hometown:"West Pittston, Pa."},
-      {name:"Anthony Speca", number:"40", position:"LB", year:"Redshirt Freshman", height:"6-1", weight:"226 lbs", hometown:"Bridgeville, Pa."},
-      {name:"Alex Tatsch", number:"25", position:"LB", year:"Freshman", height:"6-2", weight:"231 lbs", hometown:"Latrobe, Pa."},
-      {name:"Braz Thomas", number:"14", position:"S", year:"Freshman", height:"6-2", weight:"202 lbs", hometown:"Glassboro, N.J."},
-      {name:"Xxavier Thomas", number:"12", position:"CB", year:"Freshman", height:"5-11", weight:"185 lbs", hometown:"Canonsburg, Pa."},
-      {name:"Riley Thompson", number:"14", position:"P", year:"Senior", height:"6-1", weight:"224 lbs", hometown:"Melbourne, Australia"},
-      {name:"Vaboue Toure", number:"21", position:"S", year:"Redshirt Freshman", height:"6-1", weight:"208 lbs", hometown:"Pleasantville, N.J."},
-      {name:"Zion Tracy", number:"7", position:"CB", year:"Junior", height:"5-11", weight:"185 lbs", hometown:"Hempstead, N.Y."},
-      {name:"Michael Troutman III", number:"51", position:"OL", year:"Freshman", height:"6-2", weight:"308 lbs", hometown:"Trenton, N.J."},
-      {name:"Owen Wafle", number:"34", position:"DT", year:"Redshirt Freshman", height:"6-2", weight:"292 lbs", hometown:"Middletown, N.J."},
-      {name:"Cam Wallace", number:"26", position:"RB", year:"Redshirt Sophomore", height:"5-9", weight:"201 lbs", hometown:"Mount Vernon, Ga."},
-      {name:"Zakee Wheatley", number:"6", position:"S", year:"Redshirt Senior", height:"6-2", weight:"202 lbs", hometown:"Crofton, Md."},
-      {name:"Enai White", number:"45", position:"DT", year:"Redshirt Junior", height:"6-5", weight:"280 lbs", hometown:"Philadelphia, Pa."},
-      {name:"J'ven Williams", number:"74", position:"OL", year:"Redshirt Sophomore", height:"6-5", weight:"315 lbs", hometown:"Reading, Pa."},
-      {name:"Mylachi Williams", number:"20", position:"DE", year:"Redshirt Freshman", height:"6-3", weight:"248 lbs", hometown:"Philadelphia, Pa."},
-      {name:"Kenny Woseley Jr.", number:"17", position:"CB", year:"Redshirt Freshman", height:"5-10", weight:"180 lbs", hometown:"Philadelphia, Pa."},
-      {name:"Keon Wylie", number:"32", position:"LB", year:"Redshirt Junior", height:"6-2", weight:"225 lbs", hometown:"Philadelphia, Pa."}
-    ];
+    let roster = [];
+
+    async function loadRoster() {
+      try {
+        const response = await fetch('/api/players');
+        roster = await response.json();
+      } catch (err) {
+        console.error('Failed to load roster:', err);
+      }
+    }
+
+    loadRoster();
 
     function fuzzyMatch(input, name) {
       input = input.toLowerCase();
@@ -245,28 +135,30 @@
     function selectPlayer(name) {
       document.getElementById("playerInput").value = name;
       document.getElementById("suggestion").innerHTML = "";
-    }function filterByPosition() {
-  const position = document.getElementById("positionFilter").value;
-  const listEl = document.getElementById("playerList");
-  
-  if (!position) {
-    listEl.innerHTML = "";
-    return;
-  }
+    }
 
-  const filtered = roster.filter(p => p.position === position);
-  
-  if (filtered.length === 0) {
-    listEl.innerHTML = "<p style='color:#888; font-size:13px;'>No players found.</p>";
-    return;
-  }
+    function filterByPosition() {
+      const position = document.getElementById("positionFilter").value;
+      const listEl = document.getElementById("playerList");
 
-  listEl.innerHTML = filtered.map(p =>
-    `<div onclick="selectPlayer('${p.name}')" style="padding:8px 12px; cursor:pointer; border-radius:6px; font-size:14px; color:#1e407c; font-weight:500; border-bottom:1px solid #eee;">
-      #${p.number} ${p.name} <span style="color:#888; font-weight:400;">· ${p.year}</span>
-    </div>`
-  ).join("");
-}
+      if (!position) {
+        listEl.innerHTML = "";
+        return;
+      }
+
+      const filtered = roster.filter(p => p.position === position);
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = "<p style='color:#888; font-size:13px;'>No players found.</p>";
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(p =>
+        `<div onclick="selectPlayer('${p.name}')" style="padding:8px 12px; cursor:pointer; border-radius:6px; font-size:14px; color:#1e407c; font-weight:500; border-bottom:1px solid #eee;">
+          #${p.number} ${p.name} <span style="color:#888; font-weight:400;">· ${p.year}</span>
+        </div>`
+      ).join("");
+    }
 
     async function scoutPlayer() {
       const input = document.getElementById("playerInput").value;
@@ -294,13 +186,7 @@ Height: ${player.height}
 Weight: ${player.weight}
 Hometown: ${player.hometown}
 
-
-
-OVERVIEW
-2-3 sentences summarizing the player's role, physical profile, and where they are in their development.
-
-STRENGTHS
-3 bullet points hiFFormat the report exactly like this — use these exact labels as plain text headers, no markdown symbols like # or **:
+Format the report exactly like this — use these exact labels as plain text headers, no markdown symbols like # or **:
 
 OVERVIEW
 2-3 sentences summarizing the player's role, physical profile, and where they are in their development.
@@ -318,17 +204,31 @@ Use a dash - for bullet points. Do not use ** or # anywhere in your response.
 
 Be specific to their position, size, and year in school. Do not invent statistics. Write like a professional scout.`;
 
-      const response = await fetch("/api/scout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: prompt })
-      });
+      try {
+        const response = await fetch("/api/scout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: prompt })
+        });
 
-      const data = await response.json();
-      const formatted = data.result
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n\n/g, '<br><br>')
-        .replace(/\n/g, '<br>');
-      document.getElementById("result").innerHTML = formatted;}
+        const data = await response.json();
+
+        if (!data.result) {
+          document.getElementById("result").innerText = "Error generating report. Try again.";
+          console.error("API error:", data);
+          return;
+        }
+
+        const formatted = data.result
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n\n/g, '<br><br>')
+          .replace(/\n/g, '<br>');
+        document.getElementById("result").innerHTML = formatted;
+
+      } catch (err) {
+        document.getElementById("result").innerText = "Network error. Try again.";
+        console.error("Fetch error:", err);
+      }
+    }
   </script>
 </html>
