@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static('.'));
 
 const supabase = createClient(
-  process.env.SUPABASE_URL,
+  'https://xgqugeopquhrtgtncwmw.supabase.co',
   process.env.SUPABASE_KEY
 );
 
