@@ -3,11 +3,18 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
-const app = express();
+const { createClient } = require('@supabase/supabase-js');
 
+const app = express();
 app.use(express.json());
 app.use(express.static('.'));
 
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
+// Scout a player via Claude
 app.post('/api/scout', async (req, res) => {
   const { prompt } = req.body;
 
@@ -38,6 +45,26 @@ app.post('/api/scout', async (req, res) => {
   } catch (err) {
     console.error('Server error:', err.message);
     res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
+
+// Get all players from Supabase
+app.get('/api/players', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('players')
+      .select('*');
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
+
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
