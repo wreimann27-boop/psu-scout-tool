@@ -11,7 +11,7 @@ app.use(express.static('.'));
 
 const supabase = createClient(
   process.env.SUPABASE_URL || 'https://xgqugeopquhrtgtncwmw.supabase.co',
-  process.env.SUPABASE_KEY
+  process.env.SUPABASE_KEY || 'sb_secret_N9bJd1U2lr4rET6igVCt6g_rJ88ordk'
 );
 
 app.post('/api/scout', async (req, res) => {
