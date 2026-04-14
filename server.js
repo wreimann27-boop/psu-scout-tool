@@ -66,6 +66,28 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
+app.get('/api/pff/:playerName', async (req, res) => {
+  try {
+    const { playerName } = req.params;
+    const { data, error } = await supabase
+      .from('pff_grades')
+      .select('*')
+      .ilike('player_name', `%${playerName}%`)
+      .order('season', { ascending: false });
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
+
+  } catch (err) {
+    console.error('Server error:', err.message);
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+});
+
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
 });

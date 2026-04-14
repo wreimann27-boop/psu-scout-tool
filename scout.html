@@ -56,11 +56,36 @@
         color: #333;
         display: none;
       }
+      #pffInfo {
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin: 8px 0 16px 0;
+        font-size: 14px;
+      }
       #result {
         color: #555;
         font-size: 15px;
         margin-top: 16px;
         line-height: 1.8;
+      }
+      .pff-grades {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .pff-grade-box {
+        text-align: center;
+      }
+      .pff-grade-label {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+      }
+      .pff-grade-value {
+        font-size: 26px;
+        font-weight: bold;
+        color: #1e407c;
       }
     </style>
   </head>
@@ -90,6 +115,7 @@
       <div id="playerList" style="margin-bottom:12px;"></div>
       <button onclick="scoutPlayer()">Scout Player</button>
       <div id="playerInfo"></div>
+      <div id="pffInfo"></div>
       <p id="result">Enter a player name above and hit Scout Player.</p>
     </div>
   </body>
@@ -132,9 +158,37 @@
       }
     }
 
-    function selectPlayer(name) {
+    async function selectPlayer(name) {
       document.getElementById("playerInput").value = name;
       document.getElementById("suggestion").innerHTML = "";
+
+      try {
+        const res = await fetch(`/api/pff/${encodeURIComponent(name)}`);
+        const pff = await res.json();
+        const pffEl = document.getElementById("pffInfo");
+
+        if (!pff || pff.length === 0) {
+          pffEl.innerHTML = `<p style="color:#888; font-size:13px;">No PFF data found for ${name}.</p>`;
+          return;
+        }
+
+        const p = pff[0];
+        pffEl.innerHTML = `
+          <div style="background:#f4f4f4; border-radius:8px; padding:16px;">
+            <div style="font-size:12px; font-weight:600; color:#888; text-transform:uppercase; margin-bottom:8px;">PFF Data · ${p.season}</div>
+            <div class="pff-grades">
+              ${p.offense_grade ? `<div class="pff-grade-box"><div class="pff-grade-label">Off Grade</div><div class="pff-grade-value">${p.offense_grade}</div></div>` : ''}
+              ${p.defense_grade ? `<div class="pff-grade-box"><div class="pff-grade-label">Def Grade</div><div class="pff-grade-value">${p.defense_grade}</div></div>` : ''}
+              ${p.special_teams_grade ? `<div class="pff-grade-box"><div class="pff-grade-label">ST Grade</div><div class="pff-grade-value">${p.special_teams_grade}</div></div>` : ''}
+              ${p.snap_counts ? `<div class="pff-grade-box"><div class="pff-grade-label">Snaps</div><div class="pff-grade-value">${p.snap_counts}</div></div>` : ''}
+              ${p.games_played ? `<div class="pff-grade-box"><div class="pff-grade-label">Games</div><div class="pff-grade-value">${p.games_played}</div></div>` : ''}
+            </div>
+            <div style="margin-top:8px; font-size:12px; color:#555;">${p.class || ''} · ${p.status || ''}</div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('PFF fetch error:', err);
+      }
     }
 
     function filterByPosition() {
@@ -173,6 +227,8 @@
       document.getElementById("playerInfo").style.display = "block";
       document.getElementById("playerInfo").innerHTML =
         `<strong>#${player.number} ${player.name}</strong> &nbsp;·&nbsp; ${player.position} &nbsp;·&nbsp; ${player.year} &nbsp;·&nbsp; ${player.height}, ${player.weight} &nbsp;·&nbsp; ${player.hometown}`;
+
+      await selectPlayer(player.name);
 
       document.getElementById("result").innerText = "Generating scouting report...";
 
